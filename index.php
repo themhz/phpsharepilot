@@ -1,7 +1,7 @@
 <?php
 require_once 'YoutubeService.php';
 
-$apiKey = 'AIzaSyAkxan2FVao0qFdTS3sZ8WiDCf7Ea6234k';
+$apiKey = '';
 $youtubeService = new YoutubeService($apiKey);
 
 $searchQuery = 'boxing workout, motivation, hip hop, rap';
