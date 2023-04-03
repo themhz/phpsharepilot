@@ -1,5 +1,11 @@
 <?php
 require_once 'YoutubeService.php';
+$servername = "localhost";
+$username = "root";
+$password = "526996";
+$dbname = "sharepilot";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 $apiKey = '';
 $youtubeService = new YoutubeService($apiKey);
@@ -7,6 +13,26 @@ $youtubeService = new YoutubeService($apiKey);
 $searchQuery = 'boxing workout, motivation, hip hop, rap';
 $maxResults = 50;
 $videos = $youtubeService->getVideosBySearchQuery($searchQuery, $maxResults, 0);
+
+
+function isVideoInDatabase($conn, $video_url) {
+    $sql = "SELECT * FROM urls WHERE url = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $video_url);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+
+
+    if ($result->num_rows > 0) {
+        return true;
+    } else {
+        return false;
+    }
+
+    $stmt->close();
+}
+
 
 ?>
 
@@ -76,6 +102,10 @@ $videos = $youtubeService->getVideosBySearchQuery($searchQuery, $maxResults, 0);
             width: 80%;
             padding: 20px;
         }
+
+        .video-in-database {
+            background-color: #a2d5a2; /* You can choose your preferred shade of green here */
+        }
     </style>
 </head>
 <body>
@@ -111,8 +141,11 @@ $videos = $youtubeService->getVideosBySearchQuery($searchQuery, $maxResults, 0);
                 <th>Action</th>
             </tr>
             <?php
-            foreach ($videos as $video) { ?>
-            <tr>
+            foreach ($videos as $video) {
+                $isInDatabase = isVideoInDatabase($conn, $video['videoUrl']);
+                $rowClass = $isInDatabase ? 'video-in-database' : '';
+                ?>
+            <tr class="<?php echo $rowClass; ?>">
                 <td><?php echo "<img style='width:150px;' src='{$video['thumbnailUrl']}' alt='{$video['title']}' />"; ?> </td>
                 <td><?php echo $video['title'] ; ?> / <br/>
                     <a href="<?php echo $video['videoUrl'] ; ?>" target="_blank"><?php echo $video['videoUrl'] ; ?></a>
