@@ -28,13 +28,13 @@ $result = $check_stmt->get_result();
 
 if ($result->num_rows === 0) {
     // Insert the video into the database
-    $sql = "INSERT INTO urls (url, title, dateInserted, source, type) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO urls (url, title, dateInserted, source, type, thumbnailUrl) VALUES (?, ?, ?, ?, ?, ?)";
 
     $dateInserted = date('Y-m-d H:i');
     $source = 1;
     $type = 1;
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssii", $video_url, $title, $dateInserted, $source, $type);
+    $stmt->bind_param("sssiis", $video_url, $title, $dateInserted, $source, $type, $thumbnail_url);
 
     if ($stmt->execute()) {
         echo "New video added successfully";

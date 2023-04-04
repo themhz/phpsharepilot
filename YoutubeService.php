@@ -38,6 +38,16 @@ class YoutubeService
 
         $videos = array();
 
+        // Get the video IDs
+        $videoIds = [];
+        foreach ($searchResponse['items'] as $searchResult) {
+            if ($searchResult['id']['kind'] == 'youtube#video') {
+                $videoIds[] = $searchResult['id']['videoId'];
+            }
+        }
+        $videoDetails = $this->getVideoDetails($videoIds);
+
+
         foreach ($searchResponse['items'] as $searchResult) {
             if ($searchResult['id']['kind'] == 'youtube#video') {
                 $videoId = $searchResult['id']['videoId'];
@@ -60,7 +70,9 @@ class YoutubeService
                         'channelId' => $searchResult['snippet']['channelId'],
                         'channelTitle' => $searchResult['snippet']['channelTitle'],
                         'videoUrl'=> "https://www.youtube.com/watch?v={$videoId}",
-                        'likes' => $likesCount
+                        'likes' => $likesCount,
+                        'duration' => $this->formatDuration($videoDetails[$videoId]['duration']),
+
                     );
                     $videos[] = $video;
                 }
@@ -68,6 +80,47 @@ class YoutubeService
         }
 
         return $videos;
+    }
+
+    private function getVideoDetails($videoIds)
+    {
+        $client = new Google_Client();
+        $client->setDeveloperKey($this->apiKey);
+        $client->setApplicationName("SharePilot");
+
+        $service = new Google_Service_YouTube($client);
+
+        $videosResponse = $service->videos->listVideos('snippet,contentDetails', array(
+            'id' => implode(',', $videoIds),
+        ));
+
+        $videoDetails = array();
+
+        foreach ($videosResponse['items'] as $videoItem) {
+            $videoDetails[$videoItem['id']] = array(
+                'duration' => $videoItem['contentDetails']['duration']
+            );
+        }
+
+        return $videoDetails;
+    }
+
+    function formatDuration($isoDuration) {
+        try {
+            $interval = new DateInterval($isoDuration);
+        } catch (Exception $e) {
+            return '';
+        }
+
+        $hours = $interval->h;
+        $minutes = $interval->i;
+        $seconds = $interval->s;
+
+        if ($hours > 0) {
+            return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+        } else {
+            return sprintf('%02d:%02d', $minutes, $seconds);
+        }
     }
 
 
