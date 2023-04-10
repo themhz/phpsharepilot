@@ -1,10 +1,6 @@
 <?php
+require_once 'config.php';
 function deleteScheduledPost($id) {
-    // Replace these values with your database connection details
-    $servername = "localhost";
-    $username = "root";
-    $password = "526996";
-    $dbname = "sharepilot";
 
     // Create a new MySQLi connection
     $conn = new mysqli($servername, $username, $password, $dbname);

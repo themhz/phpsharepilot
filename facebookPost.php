@@ -1,4 +1,5 @@
 <?php
+require_once 'config.php';
 require_once 'FacebookService.php';
 //Create token
 //https://developers.facebook.com/tools/explorer/
@@ -6,7 +7,7 @@ require_once 'FacebookService.php';
 //https://developers.facebook.com/tools/debug/accesstoken/
 
 // Usage example:
-$accessToken = '';
+$accessToken = $fbkey;
 $pageId = 'theotokatosfc';
 $message = 'Check this out';
 $link = 'https://www.youtube.com/watch?v=8B0DvmpOtMw';

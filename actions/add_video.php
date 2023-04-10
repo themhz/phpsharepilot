@@ -1,11 +1,5 @@
 <?php
-// add_video.php
-
-// Replace these values with your database connection details
-$servername = "localhost";
-$username = "root";
-$password = "526996";
-$dbname = "sharepilot";
+require_once 'actions/config.php';
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -49,4 +43,3 @@ if ($result->num_rows === 0) {
 
 $check_stmt->close();
 $conn->close();
-?>

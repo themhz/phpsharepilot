@@ -1,6 +1,6 @@
 <?php
-$apiKey = '';
-$youtubeService = new YoutubeService($apiKey);
+require_once 'config.php';
+$youtubeService = new YoutubeService($youtubeapiKey);
 
 $searchQuery = 'boxing workout, motivation, hip hop, rap';
 $maxResults = 50;
@@ -28,6 +28,7 @@ $videos = $youtubeService->getVideosBySearchQuery($searchQuery, $maxResults, 0);
             <td><?php echo $video['publishedAt'] ; ?></td>
             <td>
                 <button class="add-video" data-video-id="<?php echo $video['id'] ?>" data-title="<?php echo htmlspecialchars($video['title'], ENT_QUOTES) ?>" data-video-url="<?php echo $video['videoUrl'] ?>" data-thumbnail-url="<?php echo $video['thumbnailUrl'] ?>" data-published-at="<?php echo $video['publishedAt'] ?>">Add</button>
+                <button class="delete-video" data-video-url="<?php echo $video['videoUrl'] ?>" >Delete</button>
             </td>
         </tr>
         <?php
@@ -95,7 +96,7 @@ $videos = $youtubeService->getVideosBySearchQuery($searchQuery, $maxResults, 0);
 
             $.ajax({
                 type: "POST",
-                url: "add_video.php",
+                url: "actions/add_video.php",
                 data: { video_id, title, video_url, thumbnail_url, published_at },
                 success: (response) => {
                     alert(response);
@@ -103,6 +104,26 @@ $videos = $youtubeService->getVideosBySearchQuery($searchQuery, $maxResults, 0);
                 },
                 error: () => {
                     alert("An error occurred while adding the video.");
+                },
+            });
+        });
+    });
+
+    document.querySelectorAll('.delete-video').forEach((button) => {
+        button.addEventListener('click', () => {
+            const url = button.getAttribute('data-video-url');
+            $.ajax({
+                type: "POST",
+                url: "actions/delete_video.php",
+                data: {
+                    url: url,
+                },
+                success: (response) => {
+                    alert(response);
+                    location.reload();
+                },
+                error: () => {
+                    alert("An error occurred while deleting the video.");
                 },
             });
         });

@@ -1,20 +1,9 @@
 <?php
-require_once 'YoutubeService.php';
-$servername = "localhost";
-$username = "root";
-$password = "526996";
-$dbname = "sharepilot";
+require_once 'config.php';
+require_once 'classes/YoutubeService.php';
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-
-
-//function getVideosFromDataBase($conn){
-//    $sql = "SELECT * FROM urls";
-//    $stmt = $conn->prepare($sql);
-//    $stmt->execute();
-//    return $stmt->get_result();
-//}
 function getVideosFromDataBase($conn) {
     $sql = "SELECT u.*, sp.id as 'scheduled_id', sp.post_time, sp.is_posted FROM urls u LEFT JOIN scheduled_posts sp ON u.id = sp.url_id";
     $result = $conn->query($sql);
@@ -87,10 +76,10 @@ function isVideoInDatabase($conn, $video_url) {
     </div>
     <div class="main" id="main-content">
         <?php
-            if(trim(strtolower($_REQUEST["page"]))=="youtube" || trim(strtolower($_REQUEST["page"]))== ""){
-                include_once "youtubelist.php";
+            if(!isset($_REQUEST["page"]) || (trim(strtolower($_REQUEST["page"]))=="youtube" || trim(strtolower($_REQUEST["page"]))== "")){
+                include_once "actions/youtubelist.php";
             }else{
-                include_once "databaselist.php";
+                include_once "actions/databaselist.php";
             }
 
         ?>

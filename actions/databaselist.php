@@ -65,7 +65,7 @@ $videos = getVideosFromDataBase($conn);
 
             $.ajax({
                 type: "POST",
-                url: "schedule_post.php",
+                url: "actions/schedule_post.php",
                 data: {
                     url_id: videoId,
                     post_time: scheduledDateTime,
@@ -87,7 +87,7 @@ $videos = getVideosFromDataBase($conn);
 
             $.ajax({
                 type: "POST",
-                url: "delete_schedule_post.php",
+                url: "actions/delete_schedule_post.php",
                 data: {
                     id: scheduled_id,
                 },

@@ -1,10 +1,7 @@
 <?php
+include_once "config.php";
+
 function addScheduledPost($url_id, $post_time, $is_posted = 0) {
-    // Replace these values with your database connection details
-    $servername = "localhost";
-    $username = "root";
-    $password = "526996";
-    $dbname = "sharepilot";
 
     // Create a new MySQLi connection
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -48,6 +45,7 @@ function addScheduledPost($url_id, $post_time, $is_posted = 0) {
     // Close the connection
     $conn->close();
 }
+
 
 // Example usage
 $url_id = $_POST['url_id'];
