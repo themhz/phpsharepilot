@@ -53,9 +53,6 @@ function isVideoInDatabase($conn, $video_url) {
 
 </head>
 <body>
-<div class="top-bar">
-    <input type="search" placeholder="Search...">
-</div>
 <div class="container">
     <div class="menu">
         <ul>
@@ -66,21 +63,30 @@ function isVideoInDatabase($conn, $video_url) {
                 <a href="?page=Youtube">Youtube</a>
             </li>
             <li class="parent">
-                Parent 2
-                <ul>
-                    <li class="child">Child 2-1</li>
-                    <li class="child">Child 2-2</li>
-                </ul>
+                <a href="?page=Schedule">Schedule</a>
+
             </li>
         </ul>
     </div>
     <div class="main" id="main-content">
+        <div class="top-bar">
+            <input type="search" placeholder="Search...">
+        </div>
         <?php
-            if(!isset($_REQUEST["page"]) || (trim(strtolower($_REQUEST["page"]))=="youtube" || trim(strtolower($_REQUEST["page"]))== "")){
+
+        switch (@trim(strtolower($_REQUEST["page"]))) {
+            case "youtube":
                 include_once "actions/youtubelist.php";
-            }else{
+                break;
+            case "database":
                 include_once "actions/databaselist.php";
-            }
+                break;
+            case "schedule":
+                include_once "actions/scheduled_list.php";
+                break;
+            default:
+                include_once "actions/youtubelist.php";
+        }
 
         ?>
     </div>

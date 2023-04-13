@@ -1,7 +1,7 @@
 <?php
-require_once 'config.php';
-function deleteScheduledPost($id) {
 
+function deleteScheduledPost($id) {
+    require_once '../config.php';
     // Create a new MySQLi connection
     $conn = new mysqli($servername, $username, $password, $dbname);
 

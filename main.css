@@ -60,3 +60,104 @@ html, body {
 .posted {
     background-color: #90ee90; /* Light green */
 }
+
+/*-----------------------------*/
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+#calendar-container {
+    margin-right: 2rem;
+}
+
+#tasks-list {
+    list-style-type: none;
+    padding: 0;
+    max-height: 500px;
+    overflow-y: auto;
+    width: 300px;
+}
+
+#tasks-list li {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #ccc;
+}
+
+#tasks-list li:nth-child(2n) {
+    /*background-color: #f5f5f5;*/
+}
+
+
+/* Modify the styles.css file */
+table {
+    border-collapse: collapse;
+    font-size: 1.25rem;
+}
+
+td,
+th {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+
+td[data-date] {
+    cursor: pointer;
+    position: relative; /* Add this line */
+}
+
+td[data-date]:before {
+    content: attr(data-task-count);
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    font-size: 0.8rem;
+    background-color: #f00;
+    color: #fff;
+    padding: 2px 4px;
+    border-radius: 50%;
+    display: none; /* Hide the task count by default */
+}
+
+td[data-tasks] {
+    background-color: #00f;
+    color: #fff;
+}
+
+td[data-tasks]:hover {
+    background-color: #0080ff;
+}
+
+/* Display the task count for days with tasks */
+td[data-tasks]:before {
+    display: inline;
+}
+
+td.current-date {
+    background-color: lightgreen;
+    color: white;
+}
+
+.current-time {
+    background-color: green;
+    color: white;
+}
+
+td.past-date {
+    background-color: green;
+    color: white;
+}
+
+.posted-task {
+    background-color: green;
+    color: white;
+}
