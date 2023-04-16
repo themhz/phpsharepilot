@@ -4,6 +4,28 @@ $videos = getVideosFromDataBase($conn);
 <h1>Videos in database</h1>
 <table>
     <tr>
+        <td>
+            <button id="scheduleButton">Schedule Posts</button>
+        </td>
+        <td>
+            <input type="date" name="initial_schedule_post_date" id="initial_schedule_post_date" value="">
+        </td>
+        <td>
+            <input type="time" name="initial_schedule_post_time" id="initial_schedule_post_time" value="">
+        </td>
+        <td>
+            <input type="text" name="hourInterval" id="hourInterval" value="">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <button id="deleteAllButton">Delete All Scheduled Posts</button>
+        </td>
+    </tr>
+</table>
+
+<table>
+    <tr>
         <th>Image</th>
         <th>Title / Url: </th>
         <th>dateInserted:</th>
@@ -100,6 +122,49 @@ $videos = getVideosFromDataBase($conn);
                 },
             });
         });
+    });
+
+    document.getElementById("scheduleButton").addEventListener("click", async () => {
+        let initial_schedule_post_date = document.getElementById(`initial_schedule_post_date`).value;
+        let initial_schedule_post_time = document.getElementById(`initial_schedule_post_time`).value;
+        let hourInterval = document.getElementById(`hourInterval`).value;
+        try {
+            const response = await fetch("actions/auto_schedule_posts.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ start_datetime: initial_schedule_post_date + ' ' +initial_schedule_post_time , hourInterval:hourInterval})
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message);
+            } else {
+                alert(`Error: ${data.error}`);
+            }
+        } catch (error) {
+            alert(`Error: ${error}`);
+        }
+    });
+
+    document.getElementById("deleteAllButton").addEventListener("click", async () => {
+        try {
+            const response = await fetch("actions/delete_all_scheduled_posts.php", {
+                method: "DELETE"
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message);
+            } else {
+                alert(`Error: ${data.error}`);
+            }
+        } catch (error) {
+            alert(`Error: ${error}`);
+        }
     });
 
 

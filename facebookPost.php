@@ -1,13 +1,6 @@
 <?php
 require_once 'config.php';
 
-
-// Database connection details
-$host = 'localhost';
-$dbname = 'sharepilot';
-$user = 'root';
-$password = '526996';
-
 // Connect to the database using PDO
 try {
     $dbh = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
