@@ -5,7 +5,7 @@ require_once 'classes/YoutubeService.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 function getVideosFromDataBase($conn) {
-    $sql = "SELECT u.*, sp.id as 'scheduled_id', sp.post_time, sp.is_posted FROM urls u LEFT JOIN scheduled_posts sp ON u.id = sp.url_id";
+    $sql = "SELECT u.*, sp.id as 'scheduled_id', sp.post_time, sp.is_posted FROM urls u LEFT JOIN scheduled_posts sp ON u.id = sp.url_id order by id desc";
     $result = $conn->query($sql);
 
     $videos = [];
