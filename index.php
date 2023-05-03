@@ -70,7 +70,10 @@ function isVideoInDatabase($conn, $video_url) {
     </div>
     <div class="main" id="main-content">
         <div class="top-bar">
-            <input type="search" placeholder="Search...">
+            <form action="?page=Youtube" method="post">
+                <input type="search" placeholder="Search..." name="txtsearch"  id="txtsearch" value="<?php echo $_POST["txtsearch"]?>">
+                <button>search</button>
+            </form>
         </div>
         <?php
 

@@ -1,10 +1,18 @@
 <?php
 require_once 'config.php';
 $youtubeService = new YoutubeService($youtubeapiKey);
+$searchQuery= "";
+$videoCategoryId = '10';
+if(!isset($_POST["txtsearch"]) || empty($_POST["txtsearch"])){
+    $searchQuery = 'boxing workout, motivation, hip hop, rap';
 
-$searchQuery = 'boxing workout, motivation, hip hop, rap';
+}else{
+    $searchQuery = $_POST["txtsearch"];
+    $videoCategoryId = null;
+}
+
 $maxResults = 50;
-$videos = $youtubeService->getVideosBySearchQuery($searchQuery, $maxResults, 0);
+$videos = $youtubeService->getVideosBySearchQuery($searchQuery, $maxResults, 0, $videoCategoryId);
 ?>
 <h1>Videos from youtube</h1>
 <table>

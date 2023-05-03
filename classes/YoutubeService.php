@@ -13,7 +13,7 @@ class YoutubeService
         $this->apiKey = $apiKey;
     }
 
-    public function getVideosBySearchQuery($searchQuery, $maxResults=5, $minLikes = 0)
+    public function getVideosBySearchQuery($searchQuery, $maxResults=5, $minLikes = 0, $videoCategoryId=null)
     {
         $client = new Google_Client();
         $client->setDeveloperKey($this->apiKey);
@@ -25,16 +25,27 @@ class YoutubeService
         $oneMonthAgo = date('Y-m-d\TH:i:s\Z', strtotime('-12 month'));
         $today = date('Y-m-d\TH:i:s\Z');
 
-        $searchResponse = $service->search->listSearch('snippet', array(
-            'q' => $searchQuery,
-            'maxResults' => $maxResults,
-            'type' => 'video',
-            'order' => 'date', // Sort by date
+        if(!$videoCategoryId == null){
+            $searchResponse = $service->search->listSearch('snippet', array(
+                'q' => $searchQuery,
+                'maxResults' => $maxResults,
+                'type' => 'video',
+                'order' => 'date', // Sort by date
 //            'publishedAfter' => $oneMonthAgo,
 //            'publishedBefore' => $today,
-            'regionCode' => 'US',
-            'videoCategoryId' => '10' // Music category ID
-        ));
+                'regionCode' => 'US',
+            ));
+        }else{
+            $searchResponse = $service->search->listSearch('snippet', array(
+                'q' => $searchQuery,
+                'maxResults' => $maxResults,
+                'type' => 'video',
+                'order' => 'date', // Sort by date
+                'regionCode' => 'US',
+                'videoCategoryId' => $videoCategoryId // Music category ID
+            ));
+        }
+
 
         $videos = array();
 
